@@ -6,6 +6,30 @@ a {
   text-decoration: none;
   color: #000;
 }
+html {
+  height: 100%;
+}
 body {
+  height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
+
+.el-form-item.is-required .el-form-item__label:before{
+  content: '';
+}
+
+.center {
+	text-align: center;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.lh-30 {
+  line-height: 30px;
+}
+.w-100p {
+  width: 100%;
 }

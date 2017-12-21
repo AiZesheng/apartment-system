@@ -12,4 +12,7 @@ export default {
 
 <style lang="scss">
   @import './scss/index.scss';
+  #app {
+  	height: 100%;
+  }
 </style>
