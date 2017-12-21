@@ -1,6 +1,6 @@
 # apartment-system
 
-> A Vue.js project
+> 毕业设计 -> 高校公寓化宿舍管理系统(前端部分)
 
 ## Build Setup
 
