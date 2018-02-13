@@ -10,18 +10,12 @@
   </div>
 </template>
 <script>
-  import {getAll} from '../services/index.js';
-  import axios from 'axios'
   export default {
-  	async mounted () {
-      let res = await getAll();
-      console.log(res.data);
-      this.$store.commit('change', '哈哈');
-      console.log(this.$store.state.name);
-  	},
-    async created () {
-      let res = await axios.get('http://localhost/aaa/aaa.php');
-      console.log(res)
+    created () {
+      // console.log(this.$store.state.loginUser);
+      // if (!this.$store.state.loginUser) {
+      //   this.$router.push('/login');
+      // }
     }
   }
 </script>

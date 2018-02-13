@@ -39,9 +39,22 @@
       submit () {
         this.$refs.mes.validate((valid) => {
           if (valid) {
-            alert('submit!');
+            const params = {
+              username: this.mes.username,
+              password: this.mes.password
+            };
+            this.$post(host + 'login', params).then(res => {
+              if (res == 0) {
+                this.$message.error('用户名或密码输入错误');
+              } else {
+                // 存入vuex和session
+                sessionStorage.loginUser = JSON.stringify(res);
+                this.$store.commit('change', res);
+                this.$router.push('/index');
+              }
+            });
           } else {
-            console.log('error submit!!');
+            // console.log('error submit!!');
             return false;
           }
         });

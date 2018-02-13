@@ -4,11 +4,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    name: '张三'
+    loginUser: ''
   },
   mutations: {
     change (state, val) {
-      state.name = val;
+    	state.loginUser = val;
     }
   }
 })
