@@ -26,8 +26,8 @@ export default {
   .main-menu {
     float: left;
     width: 200px;
-    height: 100%;
     background: #373b46;
+    height: 100%;
     .el-menu-item, .el-submenu__title {
       width: 200px;
       font-size: 17px;

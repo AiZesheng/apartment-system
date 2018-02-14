@@ -1,15 +1,15 @@
 <template>
 	<div id="menu">
     <el-menu
-      default-active="1"
+      :default-active="$store.state.active + ''"
       class="el-menu-vertical-demo"
       background-color="#373b46"
       text-color="#fff"
       active-text-color="#ffd04b">
-      <el-menu-item index="1">
+      <el-menu-item index="1" @click="$router.push('/students')">
         <span slot="title">学生信息管理</span>
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="2" @click="$router.push('/rooms')">
         <span slot="title">房间管理</span>
       </el-menu-item>
       <el-menu-item index="3">
