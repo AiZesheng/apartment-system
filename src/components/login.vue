@@ -59,6 +59,12 @@
           }
         });
       }
+    },
+    created () {
+      this.$store.commit('changeLoginState', true);
+    },
+    destroyed () {
+      this.$store.commit('changeLoginState', false);
     }
   }
 </script>
