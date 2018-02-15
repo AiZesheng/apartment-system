@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <v-header v-if="!$store.state.isLogin"></v-header>
-    <v-menu v-if="!$store.state.isLogin" class="main-menu"></v-menu>
-    <router-view></router-view>
+    <div id="content">
+      <v-menu v-if="!$store.state.isLogin" class="main-menu"></v-menu>
+      <router-view id="views"></router-view>
+    </div>
   </div>
 </template>
 
@@ -24,7 +26,7 @@ export default {
   	height: 100%;
   }
   .main-menu {
-    float: left;
+    box-flex: 1;
     width: 200px;
     background: #373b46;
     height: 100%;
@@ -35,5 +37,14 @@ export default {
     .is-active {
       background-color: rgb(44,47,56)!important;;
     }
+  }
+  #views {
+    background: #fafafa;
+    padding: 15px;
+    width: 100%;
+  }
+  #content {
+    display: flex;
+    height: 100%;
   }
 </style>

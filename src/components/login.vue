@@ -48,9 +48,8 @@
                 this.$message.error('用户名或密码输入错误');
               } else {
                 // 存入vuex和session
-                sessionStorage.loginUser = JSON.stringify(res);
-                this.$store.commit('change', res);
-                this.$router.push('/index');
+                sessionStorage.loginUser = JSON.stringify(res[0]);
+                this.$router.push('/students');
               }
             });
           } else {
@@ -72,7 +71,7 @@
   @import '../scss/base.scss';
   .login {
     height: 100%;
-    background: $baseColor;
+    background: $baseColor!important;
     h1 {
       text-align: center;
       color: #fff;

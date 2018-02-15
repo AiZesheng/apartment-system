@@ -20,6 +20,9 @@ Vue.prototype.$post = function (url, params) {
   });
 };
 window.host = 'http://localhost/apartment_php/api/';
+window.getSession = function (sessionVal) {
+  return JSON.parse(sessionStorage[sessionVal]);
+}
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
