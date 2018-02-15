@@ -3,7 +3,7 @@
     <v-header v-if="!$store.state.isLogin"></v-header>
     <div id="content">
       <v-menu v-if="!$store.state.isLogin" class="main-menu"></v-menu>
-      <router-view id="views"></router-view>
+      <router-view id="views" ref="views"></router-view>
     </div>
   </div>
 </template>
@@ -44,7 +44,7 @@ export default {
     width: 100%;
   }
   #content {
-    display: flex;
     height: 100%;
+    display: flex;
   }
 </style>

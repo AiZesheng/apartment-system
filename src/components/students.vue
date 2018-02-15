@@ -38,7 +38,7 @@
       <el-row :gutter="10">
         <el-col :span="8">
           <div class="label">&nbsp;</div>
-          <el-button type="primary" class="w-100">查询</el-button>
+          <el-button type="primary" class="w-100" @click="select">查询</el-button>
         </el-col>
       </el-row>
       <div class="dash-line"></div>
@@ -84,7 +84,7 @@
           @current-change="handleCurrentChange"
           :page-size="10"
           layout="total, prev, pager, next"
-          :total="100">
+          :total="40">
         </el-pagination>
       </div>
     </div>
@@ -99,7 +99,15 @@
         sex: '',
         college: '',
         phone: '',
-        tableData: [{
+        tableData: []
+      };
+    },
+    methods: {
+      handleCurrentChange (val) {
+        console.log(val);
+      },
+      select () {
+        this.tableData = [{
           date: '2016-05-02',
           name: '王小虎',
           address: '上海市普陀区金沙江路 1518 弄'
@@ -115,12 +123,7 @@
           date: '2016-05-03',
           name: '王小虎',
           address: '上海市普陀区金沙江路 1516 弄'
-        }]
-      };
-    },
-    methods: {
-      handleCurrentChange (val) {
-        console.log(val);
+        }];
       }
     },
     created () {
