@@ -1,6 +1,9 @@
 <template>
   <div class="s-index">
-    <div class="main-title">学生信息管理</div>
+    <div class="main-title clearfix">
+      <div class="pull-left">学生信息管理</div>
+      <el-button type="primary" size="small" class="pull-right relative t-4">添加学生</el-button>
+    </div>
     <div class="main">
       <div class="sub-title">学生信息查询</div>
       <el-row :gutter="10">

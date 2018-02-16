@@ -1,28 +1,45 @@
 <template>
   <div id="index">
-    <span>index</span>
-    <ul>
-      <li>1111</li>
-      <li>1111</li>
-      <li>1111</li>
-      <li><a href="">aaa</a></li>
-    </ul>
+    <v-header></v-header>
+    <div id="content">
+      <v-menu class="main-menu"></v-menu>
+      <router-view id="views" ref="views"></router-view>
+    </div>
   </div>
 </template>
 <script>
+  import menu from './menu.vue';
+  import header from './header.vue';
   export default {
-    created () {
-      // console.log(this.$store.state.loginUser);
-      // if (!this.$store.state.loginUser) {
-      //   this.$router.push('/login');
-      // }
+    components: {
+      'v-menu': menu,
+      'v-header': header
     }
   }
 </script>
 <style lang="scss">
   #index {
-    span {
-      color: #f00;
+    height: 100%;
+  }
+  .main-menu {
+    box-flex: 1;
+    width: 200px;
+    background: #373b46;
+    .el-menu-item, .el-submenu__title {
+      width: 200px;
+      font-size: 17px;
     }
+    .is-active {
+      background-color: rgb(44,47,56)!important;;
+    }
+  }
+  #views {
+    background: #fafafa;
+    padding: 0 15px 15px 15px;
+    width: 100%;
+  }
+  #content {
+    height: 100%;
+    display: flex;
   }
 </style>

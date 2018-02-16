@@ -8,7 +8,7 @@
           <el-input v-model="mes.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="mes.password" type="password" placeholder="请输入密码"></el-input>
+          <el-input v-model="mes.password" type="password" placeholder="请输入密码" @keyup.native="ok"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" class="w-100p mt-20" @click="submit">登录</el-button>
@@ -57,6 +57,11 @@
             return false;
           }
         });
+      },
+      ok (e) {
+        if (e.keyCode == 13) {
+          this.submit();
+        }
       }
     },
     created () {

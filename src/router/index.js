@@ -10,10 +10,11 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     { path: '/', redirect: '/login' },
-    { path: '/index', name: 'index', component: index },
     { path: '/login', name: 'login', component: login },
-    { path: '/students', name: 'students', component: students },
-    { path: '/rooms', name: 'rooms', component: rooms }
+    { path: '/index', name: 'index', component: index, children: [
+      { path: '/students', name: 'students', component: students },
+      { path: '/rooms', name: 'rooms', component: rooms }
+    ]}
   ]
 })
 export default router;

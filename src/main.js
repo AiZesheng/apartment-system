@@ -21,7 +21,11 @@ Vue.prototype.$post = function (url, params) {
 };
 window.host = 'http://localhost/apartment_php/api/';
 window.getSession = function (sessionVal) {
-  return JSON.parse(sessionStorage[sessionVal]);
+  if (sessionStorage[sessionVal]) {
+    return JSON.parse(sessionStorage[sessionVal]);
+  } else {
+    return '';
+  }
 }
 Vue.use(ElementUI)
 
