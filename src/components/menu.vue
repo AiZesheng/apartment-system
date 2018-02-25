@@ -18,6 +18,9 @@
       <el-menu-item index="4">
         <span slot="title">来访人员管理</span>
       </el-menu-item>
+      <el-menu-item index="5">
+        <span slot="title">宿舍管理员信息管理</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

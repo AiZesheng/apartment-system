@@ -30,17 +30,19 @@ body {
     font-size: 14px;
     margin-right: 30px;
   }
-  .el-input {
-    width: 50%;
-  }
-  .el-select {
-    width: 50%;
+  .select {
     .el-input {
-      width: 100%;
+      width: 50%;
     }
-  }
-  .el-row {
-    margin-top: 20px;
+    .el-select {
+      width: 50%;
+      .el-input {
+        width: 100%;
+      }
+    }
+    .el-row {
+      margin-top: 20px;
+    }
   }
   .main {
     background: #fff;
@@ -126,4 +128,7 @@ th {
 }
 .t-4 {
   top: 4px;
+}
+.t--7 {
+  top: -7px;
 }
