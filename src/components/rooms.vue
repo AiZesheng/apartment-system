@@ -1,14 +1,14 @@
 <template>
   <div class="s-index">
-    <div class="main-title">学生信息管理</div>
+    <div class="main-title">房间信息管理</div>
     <div class="main select">
       <div class="sub-title clearfix">
-        <span class="pull-left">学生信息查询</span>
-        <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addStudents')">添加学生</el-button>
+        <span class="pull-left">房间信息查询</span>
+        <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addStudents')">添加房间</el-button>
       </div>
       <el-row :gutter="10">
         <el-col :span="8">
-          <div class="label">学生姓名</div>
+          <div class="label">姓名</div>
           <el-input v-model="sname" placeholder="请输入学生姓名"></el-input>
         </el-col>
         <el-col :span="8">
@@ -204,7 +204,7 @@
       if (this.$route.params.select) {
         this.select();
       }
-      this.$store.commit('changeActive', '1');
+      this.$store.commit('changeActive', '2');
     }
   }
 </script>

@@ -15,18 +15,14 @@ Vue.prototype.$jq = $;
 Vue.prototype.$post = function (url, params) {
 	return new Promise((resolve, reject) => {
     $.post(url, params, function (data) {
-      resolve(JSON.parse(data));
+      if (typeof data === 'string' && data.indexOf('{') != -1 && data.indexOf('[') != -1) {
+        data = JSON.parse(data);
+      }
+      resolve(data);
     });
   });
 };
 window.host = 'http://localhost/apartment_php/api/';
-window.getSession = function (sessionVal) {
-  if (sessionStorage[sessionVal]) {
-    return JSON.parse(sessionStorage[sessionVal]);
-  } else {
-    return '';
-  }
-}
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

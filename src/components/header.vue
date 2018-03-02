@@ -16,7 +16,7 @@
   export default {
     computed: {
       userName () {
-        return getSession('loginUser').username;
+        return JSON.parse(sessionStorage.loginUser).username;
       }
     },
     methods: {

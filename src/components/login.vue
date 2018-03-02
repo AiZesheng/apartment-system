@@ -47,7 +47,6 @@
               if (res == 0) {
                 this.$message.error('用户名或密码输入错误');
               } else {
-                // 存入vuex和session
                 sessionStorage.loginUser = JSON.stringify(res[0]);
                 this.$router.push('/students');
               }
