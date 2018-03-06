@@ -8,8 +8,12 @@
       </div>
       <el-row :gutter="10">
         <el-col :span="8">
-          <div class="label">姓名</div>
-          <el-input v-model="sname" placeholder="请输入学生姓名"></el-input>
+          <div class="label">宿舍楼</div>
+          <el-select v-model="sex" placeholder="请选择">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
+          </el-select>
         </el-col>
         <el-col :span="8">
           <div class="label">学号</div>

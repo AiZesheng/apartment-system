@@ -45,44 +45,57 @@
         </el-col>
       </el-row>
       <div class="dash-line"></div>
-      <div class="result-num">共查询到0条结果</div>
+      <div class="result-num">共查询到{{total}}条结果</div>
       <el-table
         :data="tableData"
         border
         stripe
         style="width: 100%">
         <el-table-column
-          prop="date"
-          label="姓名"
-          width="180">
-        </el-table-column>
-        <el-table-column
+          align="center"
           prop="name"
-          label="性别"
-          width="180">
+          label="姓名"
+          width="100">
         </el-table-column>
         <el-table-column
-          prop="address"
+          align="center"
+          prop="sex"
+          label="性别"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="sno"
+          width="120"
           label="学号">
         </el-table-column>
         <el-table-column
-          prop="address"
+          align="center"
+          prop="college"
           label="学院">
         </el-table-column>
         <el-table-column
-          prop="address"
+          align="center"
+          prop="nativePlace"
           label="籍贯">
         </el-table-column>
         <el-table-column
-          prop="address"
+          align="center"
+          prop="phone"
+          width="200"
           label="手机号">
         </el-table-column>
         <el-table-column
+          align="center"
+          label="所在寝室">
+        </el-table-column>
+        <el-table-column
+          align="center"
           width="100"
           label="操作">
           <template slot-scope="scope">
             <span class="click" @click="exitStudent(scope.row.id)">编辑</span>
-            <span class="click">删除</span>
+            <span class="click" @click="showDeleteDialog(scope.row.id)">删除</span>
           </template>
         </el-table-column>
       </el-table>
@@ -94,6 +107,16 @@
           :total="40">
         </el-pagination>
       </div>
+      <el-dialog
+        :visible.sync="deleteDialog"
+        center
+        width="30%">
+        <div class="dialog-title">确认删除本条数据？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="makeDelete">确 定</el-button>
+          <el-button @click="deleteDialog = false">取 消</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -106,98 +129,51 @@
         sex: '',
         college: '',
         phone: '',
-        tableData: []
+        tableData: [],
+        total: 0,
+        id: '',
+        deleteDialog: false
       };
     },
     methods: {
       handleCurrentChange (val) {
-        console.log(val);
+        this.getResult(val);
       },
       exitStudent (id) {
         this.$router.push('/editStudents/' + id);
       },
+      showDeleteDialog (id) {
+        this.id = id;
+        this.deleteDialog = true;
+      },
+      makeDelete () {
+        this.deleteDialog = false;
+        this.$post(host + 'deleteStudent', {id: this.id}).then(res => {
+          if (res) {
+            this.$message.success('删除成功');
+            this.getResult(1);
+          }
+        });
+      },
+      getResult (val) {
+        const params = {
+          sname: this.sname,
+          sno: this.sno,
+          sex: this.sex,
+          college: this.college,
+          phone: this.phone
+        };
+        this.$post(host + 'getStudents', params).then(res => {
+          if (res == '啥也没有') {
+            this.$message.error('啥也没有');
+          } else {
+            this.tableData = res.data;
+            this.total = res.total;
+          }
+        });
+      },
       select () {
-        this.tableData = [{
-          id: 1,
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          id: 1,
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          id: 1,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }];
+        this.getResult(1);
       }
     },
     created () {

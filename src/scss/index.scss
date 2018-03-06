@@ -21,6 +21,10 @@ body {
   content: '';
 }
 
+.el-form-item__label {
+  padding-right: 20px;
+}
+
 .s-index {
   .label {
     float: left;
@@ -67,6 +71,12 @@ body {
 }
 .el-pagination {
   float: right;
+}
+.dialog-title {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  font-weight: bold;
 }
 .result-num {
   font-size: 15px;

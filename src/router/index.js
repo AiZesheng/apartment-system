@@ -6,6 +6,7 @@ import students from '@/components/students.vue'
 import addStudents from '@/components/addStudents.vue'
 import editStudents from '@/components/editStudents.vue'
 import rooms from '@/components/rooms.vue'
+import apartment from '@/components/apartment.vue'
 
 Vue.use(Router)
 
@@ -17,7 +18,8 @@ const router = new Router({
       { path: '/students', name: 'students', component: students },
       { path: '/addStudents', name: 'addStudents', component: addStudents },
       { path: '/rooms', name: 'rooms', component: rooms },
-      { path: '/editStudents/:id', name: 'editStudents', component: editStudents }
+      { path: '/editStudents/:id', name: 'editStudents', component: editStudents },
+      { path: '/apartment', name: 'apartment', component: apartment }
     ]}
   ]
 })

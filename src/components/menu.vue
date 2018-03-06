@@ -12,7 +12,7 @@
       <el-menu-item index="2" @click="$router.push('/rooms')">
         <span slot="title">房间管理</span>
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-menu-item index="3" @click="$router.push('/apartment')">
         <span slot="title">宿舍楼管理</span>
       </el-menu-item>
       <el-menu-item index="4">
