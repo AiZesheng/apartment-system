@@ -16,30 +16,19 @@
           </el-select>
         </el-col>
         <el-col :span="8">
-          <div class="label">学号</div>
-          <el-input v-model="sno" placeholder="请输入学号"></el-input>
+          <div class="label">房间号</div>
+          <el-input v-model="sno" placeholder="房间号"></el-input>
         </el-col>
         <el-col :span="8">
-          <div class="label">性别</div>
-          <el-select v-model="sex" placeholder="请选择">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8">
-          <div class="label">学院</div>
-          <el-select v-model="college" placeholder="请选择">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="软件学院" value="软件学院"></el-option>
-            <el-option label="计算机科学与技术学院" value="计算机科学与技术学院"></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="8">
-          <div class="label">手机号</div>
-          <el-input v-model="phone" placeholder="请输入手机号"></el-input>
+          <div class="label">房间类别</div>
+            <el-select v-model="sex" placeholder="请选择">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="单人间" value="单人间"></el-option>
+              <el-option label="2人间" value="2人间"></el-option>
+              <el-option label="4人间" value="4人间"></el-option>
+              <el-option label="6人间" value="6人间"></el-option>
+              <el-option label="8人间" value="8人间"></el-option>
+            </el-select>
         </el-col>
       </el-row>
       <el-row :gutter="10">
