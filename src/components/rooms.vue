@@ -20,7 +20,7 @@
           <el-input v-model="sno" placeholder="房间号"></el-input>
         </el-col>
         <el-col :span="8">
-          <div class="label">房间类别</div>
+          <div class="label">房间类型</div>
             <el-select v-model="sex" placeholder="请选择">
               <el-option label="全部" value=""></el-option>
               <el-option label="单人间" value="单人间"></el-option>
@@ -45,32 +45,39 @@
         stripe
         style="width: 100%">
         <el-table-column
+          align="center"
           prop="date"
-          label="姓名"
+          label="宿舍楼"
           width="180">
         </el-table-column>
         <el-table-column
+          align="center"
           prop="name"
-          label="性别"
+          label="房间号"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="学号">
+          align="center"
+          prop="name"
+          label="房间类型"
+          width="180">
+          <template slot-scope="scope">
+            <span>4人间</span>
+          </template>
         </el-table-column>
         <el-table-column
+          align="center"
           prop="address"
-          label="学院">
+          label="房间成员">
+          <template slot-scope="scope">
+            <span class="mr-20">张三</span>
+            <span class="mr-20">李四</span>
+            <span class="mr-20">王五</span>
+            <span>赵六</span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="籍贯">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="手机号">
-        </el-table-column>
-        <el-table-column
+          align="center"
           width="100"
           label="操作">
           <template slot-scope="scope">
