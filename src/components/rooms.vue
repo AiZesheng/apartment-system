@@ -4,15 +4,14 @@
     <div class="main select">
       <div class="sub-title clearfix">
         <span class="pull-left">房间信息查询</span>
-        <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addStudents')">添加房间</el-button>
+        <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addRooms')">添加房间</el-button>
       </div>
       <el-row :gutter="10">
         <el-col :span="8">
           <div class="label">宿舍楼</div>
-          <el-select v-model="sex" placeholder="请选择">
+          <el-select v-model="apartment" placeholder="请选择">
             <el-option label="全部" value=""></el-option>
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
+            <el-option v-for="(x,index) in apartmentArr" :key="index" :label="x.apartment" :value="x.id"></el-option>
           </el-select>
         </el-col>
         <el-col :span="8">
@@ -21,13 +20,13 @@
         </el-col>
         <el-col :span="8">
           <div class="label">房间类型</div>
-            <el-select v-model="sex" placeholder="请选择">
+            <el-select v-model="roomType" placeholder="请选择">
               <el-option label="全部" value=""></el-option>
-              <el-option label="单人间" value="单人间"></el-option>
-              <el-option label="2人间" value="2人间"></el-option>
-              <el-option label="4人间" value="4人间"></el-option>
-              <el-option label="6人间" value="6人间"></el-option>
-              <el-option label="8人间" value="8人间"></el-option>
+              <el-option label="单人间" value="1"></el-option>
+              <el-option label="2人间" value="2"></el-option>
+              <el-option label="4人间" value="4"></el-option>
+              <el-option label="6人间" value="6"></el-option>
+              <el-option label="8人间" value="8"></el-option>
             </el-select>
         </el-col>
       </el-row>
@@ -46,23 +45,26 @@
         style="width: 100%">
         <el-table-column
           align="center"
-          prop="date"
+          prop="apartment"
           label="宿舍楼"
           width="180">
         </el-table-column>
         <el-table-column
           align="center"
-          prop="name"
+          prop="roomNo"
           label="房间号"
           width="180">
         </el-table-column>
         <el-table-column
           align="center"
-          prop="name"
           label="房间类型"
           width="180">
           <template slot-scope="scope">
-            <span>4人间</span>
+            <span v-if="scope.row.roomType == 1">单人间</span>
+            <span v-if="scope.row.roomType == 2">2人间</span>
+            <span v-if="scope.row.roomType == 4">4人间</span>
+            <span v-if="scope.row.roomType == 6">6人间</span>
+            <span v-if="scope.row.roomType == 8">8人间</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -106,6 +108,8 @@
         sex: '',
         college: '',
         phone: '',
+        apartment: '',
+        apartmentArr: [],
         tableData: []
       };
     },
@@ -117,87 +121,9 @@
         this.$router.push('/editStudents/' + id);
       },
       select () {
-        this.tableData = [{
-          id: 1,
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          id: 1,
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          id: 1,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }, {
-          id: 1,
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }];
+        this.$post(host + 'getRooms').then(res => {
+          this.tableData = res;
+        });
       }
     },
     created () {
@@ -205,6 +131,10 @@
         this.select();
       }
       this.$store.commit('changeActive', '2');
+      // 发请求，拿所有宿舍楼名称
+      this.$post(host + 'getApartment').then(res => {
+        this.apartmentArr = res;
+      });
     }
   }
 </script>

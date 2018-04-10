@@ -88,14 +88,18 @@
         <el-table-column
           align="center"
           label="所在寝室">
+          <template slot-scope="scope">
+            <span>未分配寝室</span>
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
-          width="100"
+          width="200"
           label="操作">
           <template slot-scope="scope">
             <span class="click" @click="exitStudent(scope.row.id)">编辑</span>
             <span class="click" @click="showDeleteDialog(scope.row.id)">删除</span>
+            <span class="click" @click="setRoom(scope.row.id)">分配寝室</span>
           </template>
         </el-table-column>
       </el-table>
@@ -104,7 +108,7 @@
           @current-change="handleCurrentChange"
           :page-size="10"
           layout="total, prev, pager, next"
-          :total="40">
+          :total="total">
         </el-pagination>
       </div>
       <el-dialog
@@ -115,6 +119,32 @@
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="makeDelete">确 定</el-button>
           <el-button @click="deleteDialog = false">取 消</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog
+        :visible.sync="setRoomDialog"
+        center
+        class="set-room"
+        width="600px">
+        <el-form ref="mes" :model="mes" label-width="100px" class="form">
+          <el-form-item label="宿舍楼" prop="apartment" :rules="{
+            required: true, message: '请选择宿舍楼', trigger: 'change'
+          }">
+            <el-select v-model="mes.apartment" placeholder="请选择">
+              <el-option v-for="(x,index) in apartmentArr" :key="index" :label="x.apartment" :value="x.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="房间" prop="room" :rules="{
+            required: true, message: '请选择房间', trigger: 'change'
+          }">
+            <el-select v-model="mes.room" placeholder="请选择">
+              <el-option v-for="(x,index) in roomArr" :key="index" :label="x.roomNo" :value="x.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="makeSet">确 定</el-button>
+          <el-button @click="setRoomDialog = false">取 消</el-button>
         </span>
       </el-dialog>
     </div>
@@ -132,7 +162,14 @@
         tableData: [],
         total: 0,
         id: '',
-        deleteDialog: false
+        deleteDialog: false,
+        setRoomDialog: false,
+        apartmentArr: [],
+        roomArr: [],
+        mes: {
+          apartment: '',
+          roomNo: ''
+        },
       };
     },
     methods: {
@@ -146,6 +183,10 @@
         this.id = id;
         this.deleteDialog = true;
       },
+      setRoom (id) {
+        this.id = id;
+        this.setRoomDialog = true;
+      },
       makeDelete () {
         this.deleteDialog = false;
         this.$post(host + 'deleteStudent', {id: this.id}).then(res => {
@@ -155,13 +196,18 @@
           }
         });
       },
+      makeSet () {
+        alert('ok');
+      },
       getResult (val) {
         const params = {
           sname: this.sname,
           sno: this.sno,
           sex: this.sex,
           college: this.college,
-          phone: this.phone
+          phone: this.phone,
+          pageSize: 10,
+          pageNo: val
         };
         this.$post(host + 'getStudents', params).then(res => {
           if (res == '啥也没有') {
@@ -180,10 +226,18 @@
       if (this.$route.params.select) {
         this.select();
       }
+      // 发请求，拿所有宿舍楼名称
+      this.$post(host + 'getApartment').then(res => {
+        this.apartmentArr = res;
+      });
       this.$store.commit('changeActive', '1');
     }
   }
 </script>
 <style lang="scss">
-
+  .set-room {
+    .el-select {
+      width: 400px!important;
+    }
+  }
 </style>
