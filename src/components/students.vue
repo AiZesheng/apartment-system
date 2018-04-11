@@ -89,7 +89,8 @@
           align="center"
           label="所在寝室">
           <template slot-scope="scope">
-            <span>未分配寝室</span>
+            <span v-if="!scope.row.room_id">未分配寝室</span>
+            <span v-else>{{scope.row.apartment}}&nbsp;&nbsp;{{scope.row.roomNo}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -99,7 +100,7 @@
           <template slot-scope="scope">
             <span class="click" @click="exitStudent(scope.row.id)">编辑</span>
             <span class="click" @click="showDeleteDialog(scope.row.id)">删除</span>
-            <span class="click" @click="setRoom(scope.row.id)">分配寝室</span>
+            <span v-if="!scope.row.room_id" class="click" @click="setRoom(scope.row.id)">分配寝室</span>
           </template>
         </el-table-column>
       </el-table>
