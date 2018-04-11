@@ -125,19 +125,20 @@
         :visible.sync="setRoomDialog"
         center
         class="set-room"
+        @close="close"
         width="600px">
         <el-form ref="mes" :model="mes" label-width="100px" class="form">
           <el-form-item label="宿舍楼" prop="apartment" :rules="{
-            required: true, message: '请选择宿舍楼', trigger: 'change'
+            required: true, message: '请选择宿舍楼', trigger: 'submit'
           }">
-            <el-select v-model="mes.apartment" placeholder="请选择">
+            <el-select v-model="mes.apartment" placeholder="请选择" @change="change">
               <el-option v-for="(x,index) in apartmentArr" :key="index" :label="x.apartment" :value="x.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="房间" prop="room" :rules="{
-            required: true, message: '请选择房间', trigger: 'change'
+          <el-form-item label="房间" prop="roomNo" :rules="{
+            required: true, message: '请选择房间', trigger: 'submit'
           }">
-            <el-select v-model="mes.room" placeholder="请选择">
+            <el-select v-model="mes.roomNo" placeholder="请选择">
               <el-option v-for="(x,index) in roomArr" :key="index" :label="x.roomNo" :value="x.id"></el-option>
             </el-select>
           </el-form-item>
@@ -196,8 +197,31 @@
           }
         });
       },
+      change (val) {
+        // 通过apartmentId查出房间号
+        this.$post(host + 'get_by_apartmentId', {apartmentId: val}).then(res => {
+          this.roomArr = res;
+          this.mes.roomNo = '';
+        });
+      },
       makeSet () {
-        alert('ok');
+        this.$refs.mes.validate((valid) => {
+          if (valid) {
+            // 传studentId和roomId
+            this.$post(host + 'setRoom', {studentId: this.id, roomId: this.mes.roomNo}).then(res => {
+              if (res == 1) {
+                this.setRoomDialog = false;
+                this.$message.success('设置成功');
+              }
+            });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      close () {
+        this.resetForm();
       },
       getResult (val) {
         const params = {
@@ -220,7 +244,10 @@
       },
       select () {
         this.getResult(1);
-      }
+      },
+      resetForm () {
+        this.$refs.mes.resetFields();
+      },
     },
     created () {
       if (this.$route.params.select) {
