@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="8">
           <div class="label">房间号</div>
-          <el-input v-model="sno" placeholder="房间号"></el-input>
+          <el-input v-model="roomNo" placeholder="房间号"></el-input>
         </el-col>
         <el-col :span="8">
           <div class="label">房间类型</div>
@@ -37,7 +37,7 @@
         </el-col>
       </el-row>
       <div class="dash-line"></div>
-      <div class="result-num">共查询到0条结果</div>
+      <div class="result-num">共查询到{{total}}条结果</div>
       <el-table
         :data="tableData"
         border
@@ -72,10 +72,7 @@
           prop="address"
           label="房间成员">
           <template slot-scope="scope">
-            <span class="mr-20">张三</span>
-            <span class="mr-20">李四</span>
-            <span class="mr-20">王五</span>
-            <span>赵六</span>
+            <span class="mr-20" v-for="x in scope.row.name">{{x}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -83,8 +80,9 @@
           width="100"
           label="操作">
           <template slot-scope="scope">
-            <span class="click" @click="exitStudent(scope.row.id)">编辑</span>
-            <span class="click">删除</span>
+            <span class="click" v-if="scope.row.name.length != 0">查看</span>
+            <span class="click" v-if="scope.row.name.length == 0" @click="exitStudent(scope.row.id)">编辑</span>
+            <span class="click" v-if="scope.row.name.length == 0">删除</span>
           </template>
         </el-table-column>
       </el-table>
@@ -93,7 +91,7 @@
           @current-change="handleCurrentChange"
           :page-size="10"
           layout="total, prev, pager, next"
-          :total="40">
+          :total="total">
         </el-pagination>
       </div>
     </div>
@@ -103,27 +101,70 @@
   export default {
     data () {
       return {
-        sname: '',
-        sno: '',
-        sex: '',
-        college: '',
-        phone: '',
+        roomNo: '',
+        roomType: '',
         apartment: '',
         apartmentArr: [],
-        tableData: []
+        tableData: [],
+        total: 0
       };
     },
     methods: {
       handleCurrentChange (val) {
-        console.log(val);
+        this.getResult(val);
+      },
+      getResult (val) {
+        const params = {
+          apartment: this.apartment,
+          roomType: this.roomType,
+          roomNo: this.roomNo
+        };
+        this.$post(host + 'getRooms', params).then(res => {
+          let arr = [];
+          res.map(item => {
+            let i = this.findObjVal(item.id, arr);
+            if (i == -1) {
+              let str = item.name;
+              if (str) {
+                item.name = [];
+                item.name.push(str);
+              } else {
+                item.name = [];
+              }
+              arr.push(item);
+            } else {
+              if (!Array.isArray(arr[i].name)) {
+                let str = arr[i].name;
+                arr[i].name = [];
+                arr[i].name.push(str);
+              } else {
+                arr[i].name.push(item.name);
+              }
+            }
+          });
+          val = (val - 1) * 10;
+          this.tableData = arr.slice(val, val+10);
+          this.total = arr.length;
+        });
       },
       exitStudent (id) {
         this.$router.push('/editStudents/' + id);
       },
       select () {
-        this.$post(host + 'getRooms').then(res => {
-          this.tableData = res;
-        });
+        this.getResult(1);
+      },
+      findObjVal (val, arr) {
+        var i = 0;
+        for (i = 0; i < arr.length; i++) {
+          if (val == arr[i].id) {
+            break;
+          }
+        }
+        if (i == arr.length) { // 没找到
+          return -1;
+        } else {
+          return i;
+        }
       }
     },
     created () {

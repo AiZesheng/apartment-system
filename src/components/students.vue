@@ -87,6 +87,7 @@
         </el-table-column>
         <el-table-column
           align="center"
+          width="180"
           label="所在寝室">
           <template slot-scope="scope">
             <span v-if="!scope.row.room_id">未分配寝室</span>
@@ -101,6 +102,7 @@
             <span class="click" @click="exitStudent(scope.row.id)">编辑</span>
             <span class="click" @click="showDeleteDialog(scope.row.id)">删除</span>
             <span v-if="!scope.row.room_id" class="click" @click="setRoom(scope.row.id)">分配寝室</span>
+            <span v-if="scope.row.room_id" class="click" @click="changeRoom(scope.row)">更换寝室</span>
           </template>
         </el-table-column>
       </el-table>
@@ -130,14 +132,14 @@
         width="600px">
         <el-form ref="mes" :model="mes" label-width="100px" class="form">
           <el-form-item label="宿舍楼" prop="apartment" :rules="{
-            required: true, message: '请选择宿舍楼', trigger: 'submit'
+            required: true, message: '请选择宿舍楼', trigger: 'change'
           }">
             <el-select v-model="mes.apartment" placeholder="请选择" @change="change">
               <el-option v-for="(x,index) in apartmentArr" :key="index" :label="x.apartment" :value="x.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="房间" prop="roomNo" :rules="{
-            required: true, message: '请选择房间', trigger: 'submit'
+            required: true, message: '请选择房间', trigger: 'change'
           }">
             <el-select v-model="mes.roomNo" placeholder="请选择">
               <el-option v-for="(x,index) in roomArr" :key="index" :label="x.roomNo" :value="x.id"></el-option>
@@ -164,10 +166,13 @@
         tableData: [],
         total: 0,
         id: '',
+        nowPage: 1,
         deleteDialog: false,
         setRoomDialog: false,
         apartmentArr: [],
         roomArr: [],
+        changeVal: '',
+        changeFlag: 0,
         mes: {
           apartment: '',
           roomNo: ''
@@ -176,6 +181,7 @@
     },
     methods: {
       handleCurrentChange (val) {
+        this.nowPage = val;
         this.getResult(val);
       },
       exitStudent (id) {
@@ -186,7 +192,18 @@
         this.deleteDialog = true;
       },
       setRoom (id) {
+        this.changeFlag = 0;
         this.id = id;
+        this.setRoomDialog = true;
+      },
+      changeRoom (val) {
+        this.changeFlag = 1;
+        this.id = val.id;
+        this.mes.apartment = val.apartment_id;
+        this.change(val.apartment_id).then(res => {
+          this.mes.roomNo = val.room_id;
+          this.changeVal = val.room_id;
+        });
         this.setRoomDialog = true;
       },
       makeDelete () {
@@ -194,27 +211,60 @@
         this.$post(host + 'deleteStudent', {id: this.id}).then(res => {
           if (res) {
             this.$message.success('删除成功');
-            this.getResult(1);
+            this.getResult(this.nowPage);
           }
         });
       },
       change (val) {
         // 通过apartmentId查出房间号
-        this.$post(host + 'get_by_apartmentId', {apartmentId: val}).then(res => {
-          this.roomArr = res;
-          this.mes.roomNo = '';
+        return new Promise ((resolve, reject) => {
+          this.$post(host + 'get_by_apartmentId', {apartmentId: val}).then(res => {
+            this.roomArr = res;
+            this.mes.roomNo = '';
+            resolve();
+          });
         });
       },
       makeSet () {
         this.$refs.mes.validate((valid) => {
           if (valid) {
-            // 传studentId和roomId
-            this.$post(host + 'setRoom', {studentId: this.id, roomId: this.mes.roomNo}).then(res => {
-              if (res == 1) {
+            if (this.changeFlag == 0) { // 设置寝室
+              // 先判断房间是否已满 拿到roomType和t_students_rooms里的roomId出现次数
+              this.$post(host + 'isFull', {roomId: this.mes.roomNo}).then(res => {
+                if (Array.isArray(res) && res.length >= res[0].roomType) {
+                  this.$message.error('该房间已满');
+                } else {
+                  // 传studentId和roomId
+                  this.$post(host + 'setRoom', {studentId: this.id, roomId: this.mes.roomNo}).then(res => {
+                    if (res == 1) {
+                      this.setRoomDialog = false;
+                      this.$message.success('设置成功');
+                      this.getResult(this.nowPage);
+                    }
+                  });
+                }
+              });
+            } else { // 更换寝室
+              console.log(this.mes.roomNo);
+              if (this.changeVal != this.mes.roomNo) {
+                this.$post(host + 'isFull', {roomId: this.mes.roomNo}).then(res => {
+                  if (Array.isArray(res) && res.length >= res[0].roomType) {
+                    this.$message.error('该房间已满');
+                  } else {
+                    // 传studentId和roomId
+                    this.$post(host + 'changeRoom', {studentId: this.id, roomId: this.mes.roomNo}).then(res => {
+                      if (res == 1) {
+                        this.setRoomDialog = false;
+                        this.$message.success('更换成功');
+                        this.getResult(this.nowPage);
+                      }
+                    });
+                  }
+                });
+              } else {
                 this.setRoomDialog = false;
-                this.$message.success('设置成功');
               }
-            });
+            }
           } else {
             console.log('error submit!!');
             return false;
@@ -223,6 +273,8 @@
       },
       close () {
         this.resetForm();
+        this.mes.apartment = '';
+        this.mes.roomNo = '';
       },
       getResult (val) {
         const params = {
