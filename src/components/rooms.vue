@@ -80,9 +80,9 @@
           width="100"
           label="操作">
           <template slot-scope="scope">
-            <span class="click" v-if="scope.row.name.length != 0">查看</span>
-            <span class="click" v-if="scope.row.name.length == 0" @click="exitStudent(scope.row.id)">编辑</span>
-            <span class="click" v-if="scope.row.name.length == 0">删除</span>
+            <span class="click" v-if="scope.row.name.length != 0" @click="roomDetail(scope.row)">查看</span>
+            <span class="click" v-if="scope.row.name.length == 0" @click="editRooms(scope.row)">编辑</span>
+            <span class="click" v-if="scope.row.name.length == 0" @click="showDeleteDialog(scope.row.id)">删除</span>
           </template>
         </el-table-column>
       </el-table>
@@ -94,6 +94,16 @@
           :total="total">
         </el-pagination>
       </div>
+      <el-dialog
+        :visible.sync="deleteDialog"
+        center
+        width="30%">
+        <div class="dialog-title">确认删除本条数据？</div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="makeDelete">确 定</el-button>
+          <el-button @click="deleteDialog = false">取 消</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -106,12 +116,29 @@
         apartment: '',
         apartmentArr: [],
         tableData: [],
-        total: 0
+        total: 0,
+        deleteDialog: false,
+        id: '',
+        nowPage: 1
       };
     },
     methods: {
       handleCurrentChange (val) {
+        this.nowPage = val;
         this.getResult(val);
+      },
+      showDeleteDialog (id) {
+        this.id = id;
+        this.deleteDialog = true;
+      },
+      makeDelete () {
+        this.deleteDialog = false;
+        this.$post(host + 'deleteRoom', {id: this.id}).then(res => {
+          if (res) {
+            this.$message.success('删除成功');
+            this.getResult(this.nowPage);
+          }
+        });
       },
       getResult (val) {
         const params = {
@@ -147,8 +174,29 @@
           this.total = arr.length;
         });
       },
-      exitStudent (id) {
-        this.$router.push('/editStudents/' + id);
+      editRooms (obj) {
+        this.$router.push({
+          path: '/editRooms', 
+          query: {
+            roomId: obj.id,
+            apartmentId: obj.apartment_id,
+            roomNo: obj.roomNo,
+            roomType: obj.roomType,
+            name: obj.name
+          }
+        });
+      },
+      roomDetail (obj) {
+        this.$router.push({
+          path: '/roomDetail', 
+          query: {
+            roomId: obj.id,
+            apartmentId: obj.apartment_id,
+            roomNo: obj.roomNo,
+            roomType: obj.roomType,
+            name: obj.name
+          }
+        });
       },
       select () {
         this.getResult(1);
