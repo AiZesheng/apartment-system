@@ -4,7 +4,7 @@
     <div class="main select">
       <div class="sub-title clearfix">
         <span class="pull-left">宿舍管理员信息查询</span>
-        <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addVisitor')">添加来访信息</el-button>
+        <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addAdmin')">添加宿舍管理员信息</el-button>
       </div>
       <el-row :gutter="10">
         <el-col :span="8">
@@ -15,29 +15,26 @@
           </el-select>
         </el-col>
         <el-col :span="8">
-          <div class="label">来访人姓名</div>
-          <el-input v-model="visitorName" placeholder="来访人姓名"></el-input>
+          <div class="label">宿管姓名</div>
+          <el-input v-model="name" placeholder="宿管姓名"></el-input>
         </el-col>
         <el-col :span="8">
-          <div class="label">来访者身份</div>
-            <el-select v-model="visitorType" placeholder="请选择">
-              <el-option label="全部" value=""></el-option>
-              <el-option label="学生家长" value="1"></el-option>
-              <el-option label="导员" value="2"></el-option>
-              <el-option label="学校主任" value="3"></el-option>
-              <el-option label="维修人员" value="4"></el-option>
-              <el-option label="其他" value="5"></el-option>
-            </el-select>
+          <div class="label">性别</div>
+          <el-select v-model="sex" placeholder="请选择">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
+          </el-select>
         </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :span="8">
-          <div class="label">来访日期</div>
-          <el-date-picker
-            v-model="visitorDate"
-            type="date"
-            placeholder="选择日期">
-          </el-date-picker>
+          <div class="label">职务</div>
+          <el-select v-model="job" placeholder="请选择">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="宿舍楼长" value="宿舍楼长"></el-option>
+            <el-option label="宿舍阿姨" value="宿舍阿姨"></el-option>
+          </el-select>
         </el-col>
       </el-row>
       <el-row :gutter="10">
@@ -61,33 +58,32 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="visitorName"
-          label="来访人姓名"
+          prop="name"
+          label="姓名"
           width="180">
         </el-table-column>
         <el-table-column
           align="center"
-          label="来访人身份"
+          prop="sex"
+          label="性别"
           width="180">
-          <template slot-scope="scope">
-            <span v-if="scope.row.visitorType == 1">学生家长</span>
-            <span v-if="scope.row.visitorType == 2">导员</span>
-            <span v-if="scope.row.visitorType == 3">学校主任</span>
-            <span v-if="scope.row.visitorType == 4">维修人员</span>
-            <span v-if="scope.row.visitorType == 5">其他</span>
-          </template>
         </el-table-column>
         <el-table-column
           align="center"
-          prop="matter"
-          label="来访事项">
+          prop="job"
+          label="职务">
         </el-table-column>
         <el-table-column
           align="center"
-          label="来访日期"
+          prop="idNumber"
+          label="身份证号">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="入职日期"
           width="200">
           <template slot-scope="scope">
-            <span>{{getLocalTime(scope.row.visitorTime)}}</span>
+            <span>{{getLocalTime(scope.row.time)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -127,9 +123,10 @@
       return {
         apartment: '',
         apartmentArr: [],
-        visitorName: '',
-        visitorType: '',
-        visitorDate: '',
+        name: '',
+        sex: '',
+        job: '',
+        time: '',
         id: '',
         nowPage: 1,
         total: 0,
@@ -151,7 +148,7 @@
       },
       makeDelete () {
         this.deleteDialog = false;
-        this.$post(host + 'deleteVisitor', {id: this.id}).then(res => {
+        this.$post(host + 'deleteAdmin', {id: this.id}).then(res => {
           if (res) {
             this.$message.success('删除成功');
             this.getResult(this.nowPage);
@@ -161,13 +158,13 @@
       getResult (val) {
         const params = {
           apartmentId: this.apartment,
-          visitorName: this.visitorName,
-          visitorType: this.visitorType,
-          visitorDate: !this.visitorDate ? '' : this.visitorDate.getTime(),
+          name: this.name,
+          sex: this.sex,
+          job: this.job,
           pageNo: val,
           pageSize: 10
         };
-        this.$post(host + 'getVisitor', params).then(res => {
+        this.$post(host + 'getAdmin', params).then(res => {
           if (res == '啥也没有') {
             this.$message.error('啥也没有');
             this.tableData = [];
@@ -179,14 +176,15 @@
       },
       edit (obj) {
         this.$router.push({
-          path: '/editVisitor', 
+          path: '/editAdmin', 
           query: {
-            visitorId: obj.id,
+            id: obj.id,
             apartmentId: obj.apartment_id,
-            visitorName: obj.visitorName,
-            visitorType: obj.visitorType,
-            matter: obj.matter,
-            visitorTime: obj.visitorTime
+            name: obj.name,
+            sex: obj.sex,
+            job: obj.job,
+            time: obj.time,
+            idNumber: obj.idNumber
           }
         });
       },
@@ -216,7 +214,7 @@
         if (type === 'day'){
             currentdate = year + seperator1 + month + seperator1 + strDate
         }
-        return currentdate;
+        return currentdate.substring(0, 10);
       },
     },
     created () {

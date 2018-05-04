@@ -20,7 +20,7 @@
           <el-form-item label="性别" prop="sex" :rules="{
             required: true, message: '性别不能为空', trigger: 'change'
           }">
-            <el-select v-model="mes.sex" placeholder="请选择活动区域">
+            <el-select v-model="mes.sex" placeholder="请选择性别">
               <el-option label="男" value="男"></el-option>
               <el-option label="女" value="女"></el-option>
             </el-select>

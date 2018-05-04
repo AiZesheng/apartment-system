@@ -1,10 +1,10 @@
 <template>
   <div class="s-index addVisitor">
     <div class="main-title clearfix">
-      <div><span class="click" @click="toStudents">来访信息管理</span> > 添加来访信息</div>
+      <div><span class="click" @click="toStudents">宿舍管理员信息管理</span> > 添加宿舍管理员信息</div>
       <div class="main">
         <div class="sub-title clearfix">
-          <span class="pull-left">添加来访信息</span>
+          <span class="pull-left">添加宿舍管理员信息</span>
         </div>
         <el-form ref="mes" :model="mes" label-width="100px" class="form">
           <el-form-item label="宿舍楼" prop="apartment" :rules="{
@@ -14,40 +14,40 @@
               <el-option v-for="(x,index) in apartmentArr" :key="index" :label="x.apartment" :value="x.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="来访人姓名" prop="visitorName" :rules="{
-            required: true, message: '来访人姓名不能为空', trigger: 'blur'
+          <el-form-item label="宿管姓名" prop="name" :rules="{
+            required: true, message: '宿舍管理员姓名不能为空', trigger: 'blur'
           }"> 
-            <el-input v-model="mes.visitorName" placeholder="来访人姓名" style="width: 600px;"></el-input>
+            <el-input v-model="mes.name" placeholder="宿管姓名" style="width: 600px;"></el-input>
           </el-form-item>
-          <el-form-item label="来访人身份" prop="visitorType" :rules="{
-            required: true, message: '来访人身份不能为空', trigger: 'change'
+          <el-form-item label="性别" prop="sex" :rules="{
+            required: true, message: '性别不能为空', trigger: 'change'
           }">
-            <el-select v-model="mes.visitorType" placeholder="请选择来访人身份">
-              <el-option label="学生家长" value="1"></el-option>
-              <el-option label="导员" value="2"></el-option>
-              <el-option label="学校主任" value="3"></el-option>
-              <el-option label="维修人员" value="4"></el-option>
-              <el-option label="其他" value="5"></el-option>
+            <el-select v-model="mes.sex" placeholder="请选择性别">
+              <el-option label="男" value="男"></el-option>
+              <el-option label="女" value="女"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="来访事项" prop="matter" :rules="{
-            required: true, message: '来访事项不能为空', trigger: 'blur'
+          <el-form-item label="职务" prop="job" :rules="{
+            required: true, message: '职务不能为空', trigger: 'blur'
           }">
-            <el-input
-              type="textarea"
-              :rows="5"
-              placeholder="请输入内容"
-              v-model="mes.matter">
-            </el-input>
+            <el-select v-model="mes.job" placeholder="请选择">
+              <el-option label="宿舍楼长" value="宿舍楼长"></el-option>
+              <el-option label="宿舍阿姨" value="宿舍阿姨"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="来访日期" prop="visitorDate" :rules="{
-            required: true, message: '请选择来访日期', trigger: 'change'
+          <el-form-item label="身份证号" prop="idNumber" :rules="{
+            required: true, message: '身份证号不能为空', trigger: 'blur'
+          }">
+            <el-input v-model="mes.idNumber" placeholder="身份证号" style="width: 600px;"></el-input>
+          </el-form-item>
+          <el-form-item label="入职日期" prop="time" :rules="{
+            required: true, message: '请输入职日期', trigger: 'blur'
           }">
             <el-date-picker
               width="600px"
-              v-model="mes.visitorDate"
-              type="datetime"
-              placeholder="选择日期时间">
+              v-model="mes.time"
+              type="date"
+              placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="">
@@ -65,17 +65,18 @@
       return {
         mes: {
           apartment: '',
-          visitorName: '',
-          visitorType: '',
-          matter: '',
-          visitorDate: ''
+          name: '',
+          sex: '',
+          job: '',
+          time: '',
+          idNumber: ''
         },
         apartmentArr: []
       };
     },
     methods: {
       toStudents () {
-        this.$router.push({name: 'visitor', params: {select: true}});
+        this.$router.push({name: 'admin', params: {select: true}});
       },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
@@ -90,12 +91,13 @@
       makeAdd () {
         const params = {
           apartmentId: this.mes.apartment,
-          visitorName: this.mes.visitorName,
-          visitorType: this.mes.visitorType,
-          matter: this.mes.matter,
-          visitorDate: this.mes.visitorDate == '' ? '' : this.mes.visitorDate.getTime()
+          name: this.mes.name,
+          sex: this.mes.sex,
+          job: this.mes.job,
+          idNumber: this.mes.idNumber,
+          time: !this.mes.time ? '' : this.mes.time.getTime()
         };
-        this.$post(host + 'addVisitor', params).then(res => {
+        this.$post(host + 'addAdmin', params).then(res => {
           if (res == 1) {
             this.$message.success('信息添加成功');
             this.toStudents();
