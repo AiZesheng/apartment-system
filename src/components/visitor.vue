@@ -178,7 +178,7 @@
       if (this.$route.params.select) {
         this.select();
       }
-      this.$store.commit('changeActive', '4');
+      this.$store.commit('changeActive', '3');
       // 发请求，拿所有宿舍楼名称
       this.$post(host + 'getApartment').then(res => {
         this.apartmentArr = res;

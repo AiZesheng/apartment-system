@@ -13,6 +13,7 @@
         <el-form-item>
           <el-button type="primary" class="w-100p mt-20" @click="submit">登录</el-button>
         </el-form-item>
+        <span class="pull-right fz-12 click">没有帐号？立即注册</span>
       </el-form>
     </div>
   </div>
