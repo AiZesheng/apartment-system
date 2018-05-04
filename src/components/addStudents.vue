@@ -52,6 +52,11 @@
           }">
             <el-input v-model="mes.phone" placeholder="请输入手机号"></el-input>
           </el-form-item>
+          <el-form-item label="身份证号"  prop="idNumber" :rules="{
+            required: true, message: '身份证号不能为空', trigger: 'blur'
+          }">
+            <el-input v-model="mes.idNumber" placeholder="请输入身份证号"></el-input>
+          </el-form-item>
           <el-form-item label="">
             <el-button type="primary" @click="submitForm('mes')">确 定</el-button>
             <el-button @click="toStudents">取 消</el-button>
@@ -72,7 +77,8 @@
           college: '',
           nativePlace: '',
           political: '',
-          phone: ''
+          phone: '',
+          idNumber: ''
         }
       };
     },
@@ -110,7 +116,8 @@
           college: this.mes.college,
           nativePlace: this.mes.nativePlace,
           political: this.mes.political,
-          phone: this.mes.phone
+          phone: this.mes.phone,
+          idNumber: this.mes.idNumber
         };
         this.$post(host + 'addStudents', params).then(res => {
           if (res == 1) {

@@ -12,6 +12,8 @@ import editRooms from '@/components/editRooms.vue'
 import roomDetail from '@/components/roomDetail.vue'
 import visitor from '@/components/visitor.vue'
 import addVisitor from '@/components/addVisitor.vue'
+import editVisitor from '@/components/editVisitor.vue'
+import admin from '@/components/admin.vue'
 
 Vue.use(Router)
 
@@ -29,7 +31,8 @@ const router = new Router({
       { path: '/editRooms', name: 'editRooms', component: editRooms },
       { path: '/roomDetail', name: 'roomDetail', component: roomDetail },
       { path: '/visitor', name: 'visitor', component: visitor },
-      { path: '/addVisitor', name: 'addVisitor', component: addVisitor }
+      { path: '/addVisitor', name: 'addVisitor', component: addVisitor },
+      { path: '/admin', name: 'admin', component: admin }
     ]}
   ]
 })

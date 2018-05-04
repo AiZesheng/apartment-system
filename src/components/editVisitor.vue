@@ -1,10 +1,10 @@
 <template>
   <div class="s-index addVisitor">
     <div class="main-title clearfix">
-      <div><span class="click" @click="toStudents">来访信息管理</span> > 添加来访信息</div>
+      <div><span class="click" @click="toStudents">来访信息管理</span> > 编辑来访信息</div>
       <div class="main">
         <div class="sub-title clearfix">
-          <span class="pull-left">添加来访信息</span>
+          <span class="pull-left">编辑来访信息</span>
         </div>
         <el-form ref="mes" :model="mes" label-width="100px" class="form">
           <el-form-item label="宿舍楼" prop="apartment" :rules="{
@@ -63,6 +63,7 @@
   export default {
     data () {
       return {
+        id: '',
         mes: {
           apartment: '',
           visitorName: '',
@@ -89,18 +90,19 @@
       },
       makeAdd () {
         const params = {
+          id: this.id,
           apartmentId: this.mes.apartment,
           visitorName: this.mes.visitorName,
           visitorType: this.mes.visitorType,
           matter: this.mes.matter,
-          visitorDate: this.mes.visitorDate == '' ? '' : this.mes.visitorDate.getTime()
+          visitorDate: !this.mes.visitorDate ? '' : this.mes.visitorDate.getTime()
         };
-        this.$post(host + 'addVisitor', params).then(res => {
+        this.$post(host + 'editVisitor', params).then(res => {
           if (res == 1) {
-            this.$message.success('信息添加成功');
+            this.$message.success('信息修改成功');
             this.toStudents();
           } else if (res == 0) {
-            this.$message.error('信息添加失败');
+            this.$message.error('信息修改失败');
           }
         });
       }
@@ -110,6 +112,13 @@
       this.$post(host + 'getApartment').then(res => {
         this.apartmentArr = res;
       });
+      const obj = this.$route.query;
+      this.id = obj.visitorId;
+      this.mes.apartment = obj.apartmentId;
+      this.mes.visitorName = obj.visitorName;
+      this.mes.visitorType = obj.visitorType;
+      this.mes.matter = obj.matter;
+      this.mes.visitorDate = new Date(parseInt(obj.visitorTime));
     }
   }
 </script>

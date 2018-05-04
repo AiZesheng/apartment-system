@@ -72,6 +72,7 @@
         <el-table-column
           align="center"
           prop="college"
+          width="180"
           label="学院">
         </el-table-column>
         <el-table-column
@@ -81,13 +82,19 @@
         </el-table-column>
         <el-table-column
           align="center"
+          prop="idNumber"
+          width="180"
+          label="身份证号">
+        </el-table-column>
+        <el-table-column
+          align="center"
           prop="phone"
-          width="200"
+          width="160"
           label="手机号">
         </el-table-column>
         <el-table-column
           align="center"
-          width="180"
+          width="150"
           label="所在寝室">
           <template slot-scope="scope">
             <span v-if="!scope.row.room_id">未分配寝室</span>
@@ -96,7 +103,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          width="200"
+          width="160"
           label="操作">
           <template slot-scope="scope">
             <span class="click" @click="exitStudent(scope.row.id)">编辑</span>
@@ -289,6 +296,7 @@
         this.$post(host + 'getStudents', params).then(res => {
           if (res == '啥也没有') {
             this.$message.error('啥也没有');
+            this.tableData = [];
           } else {
             this.tableData = res.data;
             this.total = res.total;

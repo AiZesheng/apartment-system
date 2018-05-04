@@ -15,7 +15,7 @@
       <el-menu-item index="3" @click="$router.push('/visitor')">
         <span slot="title">来访信息管理</span>
       </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item index="4" @click="$router.push('/admin')">
         <span slot="title">宿舍管理员信息管理</span>
       </el-menu-item>
     </el-menu>

@@ -1,9 +1,9 @@
 <template>
   <div class="s-index">
-    <div class="main-title">来访人员管理</div>
+    <div class="main-title">宿舍管理员信息管理</div>
     <div class="main select">
       <div class="sub-title clearfix">
-        <span class="pull-left">来访信息查询</span>
+        <span class="pull-left">宿舍管理员信息查询</span>
         <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addVisitor')">添加来访信息</el-button>
       </div>
       <el-row :gutter="10">
@@ -223,7 +223,7 @@
       if (this.$route.params.select) {
         this.select();
       }
-      this.$store.commit('changeActive', '3');
+      this.$store.commit('changeActive', '4');
       // 发请求，拿所有宿舍楼名称
       this.$post(host + 'getApartment').then(res => {
         this.apartmentArr = res;
