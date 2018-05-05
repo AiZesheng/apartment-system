@@ -2,6 +2,8 @@
 
 > 毕业设计 -> 高校公寓化宿舍管理系统(前端部分)
 
+技术栈：vue/vue-router/vuex/webpack/sass/elementUi
+
 ## Build Setup
 
 ``` bash
