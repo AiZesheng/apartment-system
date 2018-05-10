@@ -5,6 +5,7 @@
       <div class="sub-title clearfix">
         <span class="pull-left">房间信息查询</span>
         <el-button type="primary" class="pull-right relative t--7" @click="$router.push('/addRooms')">添加房间</el-button>
+        <el-button type="primary" class="pull-right relative t--7 mr-10" @click="addApartmentDialog = true">添加宿舍楼</el-button>
       </div>
       <el-row :gutter="10">
         <el-col :span="8">
@@ -104,6 +105,21 @@
           <el-button @click="deleteDialog = false">取 消</el-button>
         </span>
       </el-dialog>
+      <el-dialog
+        :visible.sync="addApartmentDialog"
+        center
+        width="30%">
+        <div class="dialog-title">添加宿舍楼</div>
+        <el-form :model="mes" ref="mes" class="mt-40">
+          <el-form-item label="宿舍楼名称：">
+            <el-input v-model="mes.apartmentName" placeholder="请输入宿舍楼名称"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="addApartment">确 定</el-button>
+          <el-button @click="addApartmentDialog = false">取 消</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -111,6 +127,9 @@
   export default {
     data () {
       return {
+        mes: {
+          apartmentName: ''
+        },
         roomNo: '',
         roomType: '',
         apartment: '',
@@ -119,6 +138,7 @@
         total: 0,
         deleteDialog: false,
         id: '',
+        addApartmentDialog: false,
         nowPage: 1
       };
     },
@@ -130,6 +150,21 @@
       showDeleteDialog (id) {
         this.id = id;
         this.deleteDialog = true;
+      },
+      addApartment () {
+        this.addApartmentDialog = false;
+        this.$post(host + 'addApartment', {apartment: this.mes.apartmentName}).then(res => {
+          console.log(res)
+          if (res == 1) {
+            this.$message.success('添加成功');
+            // 发请求，拿所有宿舍楼名称
+            this.$post(host + 'getApartment').then(res => {
+              this.apartmentArr = res;
+            });
+          } else {
+            this.$message.error('添加失败');
+          }
+        });
       },
       makeDelete () {
         this.deleteDialog = false;

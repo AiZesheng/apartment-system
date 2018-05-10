@@ -16,12 +16,15 @@ import editVisitor from '@/components/editVisitor.vue'
 import admin from '@/components/admin.vue'
 import addAdmin from '@/components/addAdmin.vue'
 import editAdmin from '@/components/editAdmin.vue'
+import regist from '@/components/regist.vue'
+
 
 Vue.use(Router)
 
 const router = new Router({
   routes: [
     { path: '/', redirect: '/login' },
+    { path: '/regist', name: 'regist', component: regist },
     { path: '/login', name: 'login', component: login },
     { path: '/index', name: 'index', component: index, children: [
       { path: '/students', name: 'students', component: students },
