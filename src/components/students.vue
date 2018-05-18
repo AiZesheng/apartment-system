@@ -31,6 +31,9 @@
             <el-option label="全部" value=""></el-option>
             <el-option label="软件学院" value="软件学院"></el-option>
             <el-option label="计算机科学与技术学院" value="计算机科学与技术学院"></el-option>
+            <el-option label="艺术学院" value="艺术学院"></el-option>
+            <el-option label="电子工程学院" value="电子工程学院"></el-option>
+            <el-option label="生命科学学院" value="生命科学学院"></el-option>
           </el-select>
         </el-col>
         <el-col :span="8">
